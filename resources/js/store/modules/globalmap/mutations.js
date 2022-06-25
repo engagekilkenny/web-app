@@ -153,6 +153,14 @@ export const mutations = {
     },
 
     /**
+     * buildingsWithAmenities.geojson
+     */
+    setAmenitiesOsm (state, payload)
+    {
+        state.amenities = payload;
+    },
+
+    /**
      * naturalOSM.geojson
      */
     setNaturalOsm (state, payload)

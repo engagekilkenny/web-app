@@ -41,6 +41,7 @@ export const actions = {
                     context.commit('setOsmBoundaries', JSON.parse(response.data.osmBoundaries));
                     context.commit('setNaturalOsm', JSON.parse(response.data.natural));
                     context.commit('setLeisureOsm', JSON.parse(response.data.leisure));
+                    context.commit('setAmenitiesOsm', JSON.parse(response.data.amenities));
                 }
             })
             .catch(error => {

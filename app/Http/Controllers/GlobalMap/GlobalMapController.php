@@ -59,6 +59,7 @@ class GlobalMapController extends Controller
         $osmBoundaries = file_get_contents(public_path('/js/geojson/osmBoundaries.geojson'));
         $natural = file_get_contents(public_path('/js/geojson/naturalOSM.geojson'));
         $leisure = file_get_contents(public_path('/js/geojson/leisureOsm.geojson'));
+        $amenities = file_get_contents(public_path('/js/geojson/buildingsWithAmenity.geojson'));
 
         return [
             'success' => true,
@@ -76,7 +77,8 @@ class GlobalMapController extends Controller
             'landUseTypes' => $landUseTypes,
             'osmBoundaries' => $osmBoundaries,
             'natural' => $natural,
-            'leisure' => $leisure
+            'leisure' => $leisure,
+            'amenities' => $amenities,
         ];
     }
 

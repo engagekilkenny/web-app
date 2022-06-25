@@ -19,5 +19,6 @@ export const init = {
     landUseTypes: null,
     osmBoundaries: null,
     naturalOsm: null,
-    lesiure: null
+    lesiure: null,
+    amenities: null
 };
