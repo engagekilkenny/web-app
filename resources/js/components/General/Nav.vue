@@ -100,16 +100,16 @@
                             </div>
                         </div>
 
-                        <!-- The user is not authenticated -->
-                        <div v-else class="flex-not-mobile">
-                            <!-- Login -->
-                            <a class="navbar-item" @click="login">{{ $t('nav.login')}}</a>
+<!--                        &lt;!&ndash; The user is not authenticated &ndash;&gt;-->
+<!--                        <div v-else class="flex-not-mobile">-->
+<!--                            &lt;!&ndash; Login &ndash;&gt;-->
+<!--                            <a class="navbar-item" @click="login">{{ $t('nav.login')}}</a>-->
 
-                            <!-- Signup -->
-                            <router-link to="/signup" class="navbar-item">
-                                 {{ $t('nav.signup')}}
-                            </router-link>
-                        </div>
+<!--                            &lt;!&ndash; Signup &ndash;&gt;-->
+<!--                            <router-link to="/signup" class="navbar-item">-->
+<!--                                 {{ $t('nav.signup')}}-->
+<!--                            </router-link>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>

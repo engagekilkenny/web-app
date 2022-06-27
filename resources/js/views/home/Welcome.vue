@@ -8,9 +8,8 @@
                             Engage with your historic town centre
                         </h1>.
                     <h2 class="subtitle is-3 home-img-padding">
-                        How do historic buildings make you feel?
-                        What features do you like about them?
-                        We want to know!
+                        We have combined multiple datasets to create a digital engagement tool.
+                        Go check it out!
                     </h2>
 
                     <!-- Download app icons -->
@@ -76,11 +75,10 @@
 
                     <div class="column ma">
                         <h2 class="main-subtitle">
-                            2. Tell Stories
+                            2. Grow Engagement in historic town centers
                         </h2>
                         <h3 class="welcome-subtitle">
-                            Do you have any historic memories about the town centre that you would like to share?
-                            Soon you will be able to add them to our map!
+                            We want to use our digital platform to grow real-world engagement and awareness about our historic town centers.
                         </h3>
                     </div>
                 </div>
@@ -95,78 +93,77 @@
 
                     <div class="column ma">
                         <h2 class="main-subtitle">
-                            3. Discover New Insights
+                            3. Discover Kilkenny
                         </h2>
                         <h3 class="welcome-subtitle mb1em">
-                            How does our town centre make people feel?
-                            How can we learn from and preserve our heritage?
+                            Visit the map to explore the different cultural, service and administrative layers of Kilkenny.
                         </h3>
                     </div>
                 </div>
             </div>
 
-            <!-- How does it work -->
-            <div>
-                <h1 class="main-title mb1">
-                    {{ $t('home.welcome.how-does-it-work') }}?
-                </h1>
+<!--            &lt;!&ndash; How does it work &ndash;&gt;-->
+<!--            <div>-->
+<!--                <h1 class="main-title mb1">-->
+<!--                    {{ $t('home.welcome.how-does-it-work') }}?-->
+<!--                </h1>-->
 
-                <div class="columns welcome-mb">
-                    <div class="column is-one-quarter icon-center">
-                        <img
-                            src="/assets/icons/home/camera.png"
-                            class="about-icon"
-                        />
-                    </div>
+<!--                <div class="columns welcome-mb">-->
+<!--                    <div class="column is-one-quarter icon-center">-->
+<!--                        <img-->
+<!--                            src="/assets/icons/home/camera.png"-->
+<!--                            class="about-icon"-->
+<!--                        />-->
+<!--                    </div>-->
 
-                    <div class="column ma">
-                        <h2 class="main-subtitle">
-                            1. Take a photo
-                        </h2>
-                        <h3 class="welcome-subtitle mb1em">
-                            Your devices captures where you took the photo.
-                            We need your help to take geotagged photos of buildings and tell us what you think about them.
-                        </h3>
-                    </div>
-                </div>
+<!--                    <div class="column ma">-->
+<!--                        <h2 class="main-subtitle">-->
+<!--                            1. Take a photo-->
+<!--                        </h2>-->
+<!--                        <h3 class="welcome-subtitle mb1em">-->
+<!--                            Your devices captures where you took the photo.-->
+<!--                            We need your help to take geotagged photos of buildings and tell us what you think about them.-->
+<!--                        </h3>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="columns welcome-mb">
-                    <div class="column is-one-quarter icon-center">
-                        <img
-                            src="/assets/icons/home/phone.png"
-                            class="about-icon"
-                        />
-                    </div>
+<!--                <div class="columns welcome-mb">-->
+<!--                    <div class="column is-one-quarter icon-center">-->
+<!--                        <img-->
+<!--                            src="/assets/icons/home/phone.png"-->
+<!--                            class="about-icon"-->
+<!--                        />-->
+<!--                    </div>-->
 
-                    <div class="column ma">
-                        <h2 class="main-subtitle">
-                            2. Add Tags
-                        </h2>
-                        <h3 class="welcome-subtitle mb1em">
-                            After taking a photo, choose from our tags. Is it a beautiful old sign? A broken window?
-                            How does the image make you feel?
-                        </h3>
-                    </div>
-                </div>
+<!--                    <div class="column ma">-->
+<!--                        <h2 class="main-subtitle">-->
+<!--                            2. Add Tags-->
+<!--                        </h2>-->
+<!--                        <h3 class="welcome-subtitle mb1em">-->
+<!--                            After taking a photo, choose from our tags. Is it a beautiful old sign? A broken window?-->
+<!--                            How does the image make you feel?-->
+<!--                        </h3>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="columns welcome-mb">
-                    <div class="column is-one-quarter icon-center">
-                        <img
-                            src="/assets/icons/twitter2.png"
-                            class="about-icon"
-                        />
-                    </div>
+<!--                <div class="columns welcome-mb">-->
+<!--                    <div class="column is-one-quarter icon-center">-->
+<!--                        <img-->
+<!--                            src="/assets/icons/twitter2.png"-->
+<!--                            class="about-icon"-->
+<!--                        />-->
+<!--                    </div>-->
 
-                    <div class="column ma">
-                        <h2 class="main-subtitle">
-                            3. Explore the map
-                        </h2>
-                        <h3 class="welcome-subtitle">
-                            Visit the EngageKilkenny map and engage with the buildings online!
-                        </h3>
-                    </div>
-                </div>
-            </div>
+<!--                    <div class="column ma">-->
+<!--                        <h2 class="main-subtitle">-->
+<!--                            3. Explore the map-->
+<!--                        </h2>-->
+<!--                        <h3 class="welcome-subtitle">-->
+<!--                            Visit the EngageKilkenny map and engage with the buildings online!-->
+<!--                        </h3>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!-- Partners -->
             <div class="partners-container container is-max-desktop">
@@ -304,6 +301,7 @@ export default {
 
     .icon-center {
         margin: auto;
+        text-align: center;
     }
 
     .welcome-mb {

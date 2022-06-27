@@ -33,7 +33,6 @@ import { bridgesHelper } from "../../maps/bridgesHelper";
 import { acasHelper } from "../../maps/acasHelper";
 import { landUseHelper } from "../../maps/landUseHelper";
 
-
 var map;
 
 var buildings, buildingsWithoutYear,
