@@ -25,9 +25,9 @@
 <!--                        </router-link>-->
 
                         <!-- Kilkenny Map -->
-                        <router-link to="/map" class="navbar-item" @click.native="close">
-                            Map
-                        </router-link>
+<!--                        <router-link to="/map" class="navbar-item" @click.native="close">-->
+<!--                            Map-->
+<!--                        </router-link>-->
 
                         <!-- if auth -->
                         <div v-if="auth" class="flex-not-mobile">

@@ -12,20 +12,28 @@
                         Go check it out!
                     </h2>
 
+                    <router-link
+                        to="/map"
+                        class="button is-medium is-info map-button"
+                        @click.native="close"
+                    >
+                        Click here to see the map
+                    </router-link>
+
                     <!-- Download app icons -->
-                    <div class="flex">
-                        <img
-                            src="/assets/icons/ios.png"
-                            class="app-icon"
-                            style="margin-right: 1em;"
-                            @click="ios"
-                        />
-                        <img
-                            src="/assets/icons/android.png"
-                            class="app-icon"
-                            @click="android"
-                        />
-                    </div>
+<!--                    <div class="flex">-->
+<!--                        <img-->
+<!--                            src="/assets/icons/ios.png"-->
+<!--                            class="app-icon"-->
+<!--                            style="margin-right: 1em;"-->
+<!--                            @click="ios"-->
+<!--                        />-->
+<!--                        <img-->
+<!--                            src="/assets/icons/android.png"-->
+<!--                            class="app-icon"-->
+<!--                            @click="android"-->
+<!--                        />-->
+<!--                    </div>-->
                 </div>
 
                 <div class="column is-half">
@@ -273,6 +281,12 @@ export default {
 
 <style scoped lang="scss">
 
+    .map-button {
+        margin: 2em;
+        display: flex;
+        width: 80%;
+        height: 4em;
+    }
 
     .about-icon {
         height: 10em;
