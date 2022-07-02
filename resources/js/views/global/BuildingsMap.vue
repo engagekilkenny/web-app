@@ -44,6 +44,7 @@ var buildings, buildingsWithoutYear,
     buildings_1917_1950,
     buildings_1951_2000,
     buildings_2001_2022;
+var vacant, abandoned;
 
 var apartmentsPoly, bankPoly, bridgePoly, chapelPoly, churchPoly, cinemaPoly, civicPoly, clinicPoly, collegePoly,
     commercialPoly, constructionPoly, dovecotePoly, detatchedPoly, fireStationPoly, garagePoly, governmentPoly,
@@ -275,8 +276,14 @@ function createLayerController ()
                         ]
                     },
                     {
+                        label: 'Dereliction',
+                        children: [
+                            { label: ' Abandoned', layer: abandoned },
+                            { label: ' Vacant', layer: vacant }
+                        ]
+                    },
+                    {
                         label: ' Year Of Construction',
-                        // layer: buildings,
                         children: [
                             { label: ' 1200-1300', layer: buildings_1200_1300 },
                             { label: ' 1301-1650', layer: buildings_1301_1605 },
@@ -500,6 +507,7 @@ function addBuildingLayers (buildingsGeojson)
         onEachFeature: onEachBuilding
     });
 
+    // Without Year
     const filteredBuildingsWithYear = buildingsGeojson.filter(feature => {
         return (feature.properties.hasOwnProperty('NEWDATE'));
     });
@@ -524,6 +532,7 @@ function addBuildingLayers (buildingsGeojson)
         type: "FeatureCollection"
     });
 
+    // With Year
     const buildings_1200_1300_JS = buildingsHelper.getBuildingByYear(filteredBuildingsWithYear, 1200, 1300);
     const buildings_1301_1605_JS = buildingsHelper.getBuildingByYear(filteredBuildingsWithYear, 1301, 1605);
     const buildings_1651_1765_JS = buildingsHelper.getBuildingByYear(filteredBuildingsWithYear, 1651, 1765);
@@ -570,13 +579,13 @@ function addBuildingLayers (buildingsGeojson)
     const ruinsArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'ruins');
     const schoolArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'school');
     const serviceArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'service');
-    const shedArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
-    const stadiumArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
-    const teahouseArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
-    const terraceArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
-    const towerArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
-    const trainStationAarray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
-    const warehouseArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'apartments');
+    const shedArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'shed');
+    const stadiumArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'stadium');
+    const teahouseArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'teahouse');
+    const terraceArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'terrace');
+    const towerArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'tower');
+    const trainStationAarray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'train_station');
+    const warehouseArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'warehouse');
 
     apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
     bankPoly = L.geoJSON(bankArray, { onEachFeature: onEachDefaultLayer });
@@ -606,14 +615,31 @@ function addBuildingLayers (buildingsGeojson)
     ruinsPoly = L.geoJSON(ruinsArray, { onEachFeature: onEachDefaultLayer });
     schoolPoly = L.geoJSON(schoolArray, { onEachFeature: onEachDefaultLayer });
     servicePoly = L.geoJSON(serviceArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
-    // apartmentsPoly = L.geoJSON(apartmentsArray, { onEachFeature: onEachDefaultLayer });
+    shedPoly = L.geoJSON(shedArray, { onEachFeature: onEachDefaultLayer });
+    stadiumPoly = L.geoJSON(stadiumArray, { onEachFeature: onEachDefaultLayer });
+    teahousePoly = L.geoJSON(teahouseArray, { onEachFeature: onEachDefaultLayer });
+    terracePoly = L.geoJSON(terraceArray, { onEachFeature: onEachDefaultLayer });
+    towerPoly = L.geoJSON(towerArray, { onEachFeature: onEachDefaultLayer });
+    trainStationPoly = L.geoJSON(trainStationAarray, { onEachFeature: onEachDefaultLayer });
+    warehousePoly = L.geoJSON(warehouseArray, { onEachFeature: onEachDefaultLayer });
+
+    // Vacant
+    const vacantGeojson = buildingsGeojson.filter(feature => {
+        return (feature.properties.vacant === "yes");
+    });
+
+    vacant = L.geoJSON(vacantGeojson, {
+        onEachFeature: onEachBuilding
+    });
+
+    // Abandoned
+    const abandonedGeojson = buildingsGeojson.filter(feature => {
+       return (feature.properties.abandoned === "yes");
+    });
+
+    abandoned = L.geoJSON(abandonedGeojson, {
+        onEachFeature: onEachDefaultLayer
+    });
 }
 /**
  * On each building feature
@@ -637,7 +663,9 @@ function onEachBuilding (feature, layer)
             .setLatLng(e.latlng)
             .setContent(str)
             .openOn(map);
+
         L.DomEvent.stopPropagation(e);
+
         // Check if the building has any stories
         // await axios.get('/check-building', {
         //     params: {
@@ -654,6 +682,7 @@ function onEachBuilding (feature, layer)
         // .catch(error => {
         //     console.error('check_building', error);
         // });
+
         window.buildingsMap.buildingsKey++;
     });
 

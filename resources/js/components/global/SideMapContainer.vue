@@ -13,7 +13,6 @@
             </div>
 
             <div v-else>
-
                 <div class="mb1">
                     <p class="mb1">Do you want to add a story or some data?</p>
 
@@ -24,7 +23,6 @@
                 </div>
 
                 <div v-if="dataType === 'story'">
-
                     <p class="mb1">
                         Do you have any nice stories about this building?
                     </p>
@@ -54,7 +52,6 @@
                 </div>
 
                 <div v-else>
-
                     <p class="input-label mb1">
                         Enter some data about this building.
                     </p>
@@ -75,9 +72,7 @@
                         max="2022"
                     />
 
-
                     <div class="flex mb2">
-
                         <div class="flex-1 mr1">
                             <p class="input-label">Add key</p>
 
@@ -159,9 +154,13 @@
         </div>
 
         <div class="mb1">
-            <p class="input-label mb1">Engage Kilkenny is brought to you by the Heritage Council's Collaborative Town Centre Health Check</p>
+            <p class="input-label">
+                Engage Kilkenny is brought to you by the Heritage Council's Collaborative Town Centre Health Check (CTCHC).
+            </p>
 
-            <img src="/assets/HC_logo_retina.png" class="small_heritage_logo" />
+            <img src="/assets/ctchc_logo.png" class="w-50" />
+
+            <img src="/assets/HC_logo_retina.png" class="w-50 mb-05" />
 
             <p class="input-label">This data has been sourced from <a href="https://openstreetmap.org" target="_blank">OpenStreetMap</a>,
 

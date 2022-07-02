@@ -62,7 +62,7 @@
                 <div class="column is-2">
                     <p class="olm-subtitle">{{ $t('home.footer.watch') }}</p>
 
-                    <p class="footer-link">Todo - How To Use The App</p>
+                    <p class="footer-link">Coming soon</p>
                 </div>
 
                 <div class="column is-2">
@@ -72,7 +72,7 @@
                         <p class="footer-link">{{ $t('home.footer.contact-us') }}</p>
                     </router-link>
                     <p class="footer-link">{{ $t('home.footer.create-account') }}</p>
-                    <p class="footer-link" @click="open('https://github.com/engage-kilkenny')">GitHub</p>
+                    <p class="footer-link" @click="open('https://github.com/engagekilkenny/web-app')">GitHub</p>
                 </div>
             </div>
         </div>
@@ -81,8 +81,8 @@
         <div class="footer-bottom">
             <p class="footer-text">
                 Engage Kilkenny is brought to you by GeoTech Innovations Ltd,
-                a software developmeny company in Ireland
-                specialising in building citizen science and geospatial data collection experiences.
+                a software development company in Ireland who specialise
+                in building geospatial experiences.
             </p>
         </div>
     </footer>
@@ -91,8 +91,7 @@
 <script>
 export default {
     name: 'Footer',
-    data ()
-    {
+    data () {
         return {
             email: '',
             socials: [
@@ -103,7 +102,6 @@ export default {
         };
     },
     computed: {
-
         /**
          * Errors object
          */
