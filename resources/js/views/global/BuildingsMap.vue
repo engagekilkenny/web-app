@@ -45,9 +45,11 @@ var buildings, buildingsWithoutYear,
     buildings_1951_2000,
     buildings_2001_2022;
 var vacant, abandoned;
+var vegan;
+var wheelchairYes, wheelchairLimited, wheelchairNo;
 
 var apartmentsPoly, bankPoly, bridgePoly, chapelPoly, churchPoly, cinemaPoly, civicPoly, clinicPoly, collegePoly,
-    commercialPoly, constructionPoly, dovecotePoly, detatchedPoly, fireStationPoly, garagePoly, governmentPoly,
+    commercialPoly, constructionPoly, dovecotePoly, Detached, fireStationPoly, garagePoly, governmentPoly,
     hospitalPoly, hotelPoly, housePoly, industrialPoly, officePoly, publicPoly, residentialPoly, retailPoly,
     roofPoly, ruinsPoly, schoolPoly, servicePoly, shedPoly, stadiumPoly, teahousePoly, terracePoly, towerPoly,
     trainStationPoly, warehousePoly;
@@ -238,6 +240,28 @@ function createLayerController ()
                 selectAllCheckbox: false,
                 children: [
                     {
+                        label: ' Age',
+                        children: [
+                            {
+                                label: ' Year Of Construction',
+                                children: [
+                                    { label: ' 1200-1300', layer: buildings_1200_1300 },
+                                    { label: ' 1301-1650', layer: buildings_1301_1605 },
+                                    { label: ' 1651-1765', layer: buildings_1651_1765 },
+                                    { label: ' 1766-1815', layer: buildings_1766_1815 },
+                                    { label: ' 1816-1916', layer: buildings_1816_1916 },
+                                    { label: ' 1917-1950', layer: buildings_1917_1950 },
+                                    { label: ' 1951-2000', layer: buildings_1951_2000 },
+                                    { label: ' 2001-2022', layer: buildings_2001_2022 }
+                                ]
+                            },
+                            {
+                                label: ' Year Missing',
+                                layer: buildingsWithoutYear
+                            }
+                        ]
+                    },
+                    {
                         label: ' Amenities',
                         selectAllCheckbox: false,
                         collapsed: true,
@@ -248,7 +272,7 @@ function createLayerController ()
                             { label: ' Cafe', layer: cafeAmenity },
                             { label: ' Car Wash', layer: carWashAmenity },
                             { label: ' Cinema', layer: cinemaAmenity },
-                            { label: ' Clinic', layer: clinicAmenity },
+                            // { label: ' Clinic', layer: clinicAmenity }, not in the data
                             { label: ' College', layer: collegeAmenity },
                             { label: ' Community Centre', layer: communityCentreAmenity },
                             { label: ' Courthouse', layer: courtHouseAmenity },
@@ -258,7 +282,7 @@ function createLayerController ()
                             { label: ' Fuel', layer: fuelAmenity },
                             { label: ' Graveyard', layer: graveyardAmenity },
                             { label: ' Library', layer: libraryAmenity },
-                            { label: ' Kindergarten', layer: kindergartenAmenity },
+                            // { label: ' Kindergarten', layer: kindergartenAmenity }, gdpr?
                             { label: ' Parking', layer: parkingAmenity },
                             { label: ' Pharmacy', layer: pharmacyAmenity },
                             { label: ' Place of Worship', layer: placeOfWorshipAmenity },
@@ -272,32 +296,16 @@ function createLayerController ()
                             { label: ' Taxi', layer: taxiAmenity },
                             { label: ' Theatre', layer: theatreAmenity },
                             { label: ' Townhall', layer: townhallAmenity },
-                            { label: ' Vetinary', layer: vetinaryAmenity},
+                            { label: ' Vetinary', layer: vetinaryAmenity },
                         ]
                     },
                     {
                         label: 'Dereliction',
                         children: [
                             { label: ' Abandoned', layer: abandoned },
+                            { label: ' Ruins', layer: ruinsPoly },
                             { label: ' Vacant', layer: vacant }
                         ]
-                    },
-                    {
-                        label: ' Year Of Construction',
-                        children: [
-                            { label: ' 1200-1300', layer: buildings_1200_1300 },
-                            { label: ' 1301-1650', layer: buildings_1301_1605 },
-                            { label: ' 1651-1765', layer: buildings_1651_1765 },
-                            { label: ' 1766-1815', layer: buildings_1766_1815 },
-                            { label: ' 1816-1916', layer: buildings_1816_1916 },
-                            { label: ' 1917-1950', layer: buildings_1917_1950 },
-                            { label: ' 1951-2000', layer: buildings_1951_2000 },
-                            { label: ' 2001-2022', layer: buildings_2001_2022 }
-                        ]
-                    },
-                    {
-                        label: ' Year Missing',
-                        layer: buildingsWithoutYear
                     },
                     {
                         label: ' Types',
@@ -307,16 +315,16 @@ function createLayerController ()
                             { label: ' Apartments', layer: apartmentsPoly },
                             { label: ' Bank', layer: bankPoly },
                             { label: ' Bridge', layer: bridgePoly },
-                            { label: ' Chapel', layer: chapelPoly },
+                            // { label: ' Chapel', layer: chapelPoly }, not found
                             { label: ' Church', layer: churchPoly },
                             { label: ' Cinema', layer: cinemaPoly },
                             { label: ' Civic', layer: civicPoly },
-                            { label: ' Clinic', layer: clinicPoly },
+                            // { label: ' Clinic', layer: clinicPoly },
                             { label: ' College', layer: collegePoly },
                             { label: ' Commercial', layer: commercialPoly },
                             { label: ' Construction', layer: constructionPoly },
                             { label: ' Dovecote', layer: dovecotePoly },
-                            { label: ' Detatched', layer: detatchedPoly },
+                            { label: ' Detached', layer: Detached },
                             { label: ' Fire Station', layer: fireStationPoly },
                             { label: ' Garage', layer: garagePoly },
                             { label: ' Government', layer: governmentPoly },
@@ -329,16 +337,23 @@ function createLayerController ()
                             { label: ' Residential', layer: residentialPoly },
                             { label: ' Retail', layer: retailPoly },
                             { label: ' Roof', layer: roofPoly },
-                            { label: ' Ruins', layer: ruinsPoly },
                             { label: ' School', layer: schoolPoly },
                             { label: ' Service', layer: servicePoly },
                             { label: ' Shed', layer: shedPoly },
                             { label: ' Stadium', layer: stadiumPoly },
                             { label: ' Teahouse', layer: teahousePoly },
-                            { label: ' Terrace', layer: terracePoly },
+                            // { label: ' Terrace', layer: terracePoly }, not found
                             { label: ' Tower', layer: towerPoly },
                             { label: ' Train Station', layer: trainStationPoly },
                             { label: ' Warehouse', layer: warehousePoly }
+                        ]
+                    },
+                    {
+                        label: ' Wheelchair',
+                        children: [
+                            { label: ' Yes', layer: wheelchairYes },
+                            { label: ' Limited', layer: wheelchairLimited },
+                            { label: ' No', layer: wheelchairNo }
                         ]
                     }
                 ]
@@ -563,7 +578,7 @@ function addBuildingLayers (buildingsGeojson)
     const commercialArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'commercial');
     const constructionArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'construction');
     const dovecoteArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'dovecote');
-    const detatchedArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'detatched');
+    const detachedArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'detached');
     const fireStationArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'fire_station');
     const garageArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'garage');
     const governmentArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'government');
@@ -599,7 +614,7 @@ function addBuildingLayers (buildingsGeojson)
     commercialPoly = L.geoJSON(commercialArray, { onEachFeature: onEachDefaultLayer });
     constructionPoly = L.geoJSON(constructionArray, { onEachFeature: onEachDefaultLayer });
     dovecotePoly = L.geoJSON(dovecoteArray, { onEachFeature: onEachDefaultLayer });
-    detatchedPoly = L.geoJSON(detatchedArray, { onEachFeature: onEachDefaultLayer });
+    Detached = L.geoJSON(detachedArray, { onEachFeature: onEachDefaultLayer });
     fireStationPoly = L.geoJSON(fireStationArray, { onEachFeature: onEachDefaultLayer });
     garagePoly = L.geoJSON(garageArray, { onEachFeature: onEachDefaultLayer });
     governmentPoly = L.geoJSON(governmentArray, { onEachFeature: onEachDefaultLayer });
@@ -627,7 +642,6 @@ function addBuildingLayers (buildingsGeojson)
     const vacantGeojson = buildingsGeojson.filter(feature => {
         return (feature.properties.vacant === "yes");
     });
-
     vacant = L.geoJSON(vacantGeojson, {
         onEachFeature: onEachBuilding
     });
@@ -636,9 +650,30 @@ function addBuildingLayers (buildingsGeojson)
     const abandonedGeojson = buildingsGeojson.filter(feature => {
        return (feature.properties.abandoned === "yes");
     });
-
     abandoned = L.geoJSON(abandonedGeojson, {
-        onEachFeature: onEachDefaultLayer
+        onEachFeature: onEachBuilding
+    });
+
+    // Wheelchair
+    const wheelchairGeojsonYes = buildingsGeojson.filter(feature => {
+        return (feature.properties.wheelchair === "yes");
+    });
+    wheelchairYes = L.geoJSON(wheelchairGeojsonYes, {
+        onEachFeature: onEachBuilding
+    });
+
+    const wheelchairGeojsonLimited = buildingsGeojson.filter(feature => {
+        return (feature.properties.wheelchair === "limited");
+    });
+    wheelchairLimited = L.geoJSON(wheelchairGeojsonLimited, {
+        onEachFeature: onEachBuilding
+    });
+
+    const wheelchairGeojsonNo = buildingsGeojson.filter(feature => {
+        return (feature.properties.wheelchair === "no");
+    });
+    wheelchairNo = L.geoJSON(wheelchairGeojsonNo, {
+        onEachFeature: onEachBuilding
     });
 }
 /**
@@ -944,7 +979,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     const cafeArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'cafe');
     const carWashArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'car_wash');
     const cinemaArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'cinema');
-    const clinicArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'clinic');
+    // const clinicArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'clinic'); // not found in the data
     const collegeArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'college');
     const communityCentreArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'community_centre');
     const courtHouseArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'courthouse');
@@ -968,7 +1003,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     const taxiArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'taxi');
     const theatreArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'theatre');
     const townhallArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'townhall');
-    const vetinaryArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'vetinary');
+    const vererinaryArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'veterinary');
 
     bankAmenity = L.geoJSON(bankArray, { onEachFeature: onEachDefaultLayer });
     barAmenity = L.geoJSON(barArray, { onEachFeature: onEachDefaultLayer });
@@ -976,7 +1011,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     cafeAmenity = L.geoJSON(cafeArray, { onEachFeature: onEachDefaultLayer });
     carWashAmenity = L.geoJSON(carWashArray, { onEachFeature: onEachDefaultLayer });
     cinemaAmenity = L.geoJSON(cinemaArray, { onEachFeature: onEachDefaultLayer });
-    clinicAmenity = L.geoJSON(clinicArray, { onEachFeature: onEachDefaultLayer });
+    // clinicAmenity = L.geoJSON(clinicArray, { onEachFeature: onEachDefaultLayer });
     collegeAmenity = L.geoJSON(collegeArray, { onEachFeature: onEachDefaultLayer });
     communityCentreAmenity = L.geoJSON(communityCentreArray, { onEachFeature: onEachDefaultLayer });
     courtHouseAmenity = L.geoJSON(courtHouseArray, { onEachFeature: onEachDefaultLayer });
@@ -1000,7 +1035,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     taxiAmenity = L.geoJSON(taxiArray, { onEachFeature: onEachDefaultLayer });
     theatreAmenity = L.geoJSON(theatreArray, { onEachFeature: onEachDefaultLayer });
     townhallAmenity = L.geoJSON(townhallArray, { onEachFeature: onEachDefaultLayer });
-    vetinaryAmenity = L.geoJSON(vetinaryArray, { onEachFeature: onEachDefaultLayer });
+    vetinaryAmenity = L.geoJSON(vererinaryArray, { onEachFeature: onEachDefaultLayer });
 }
 
 function addOsmBoundaries (osmBoundariesGeojson)
