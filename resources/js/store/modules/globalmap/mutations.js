@@ -210,6 +210,14 @@ export const mutations = {
     },
 
     /**
+     * Set the record of protected structures
+     */
+    setRPS (state, payload)
+    {
+        state.rps = payload;
+    },
+
+    /**
      * Walls.geojson is fetched from the backend
      */
     setWalls (state, payload)

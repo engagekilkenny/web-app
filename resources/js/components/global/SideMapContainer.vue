@@ -140,7 +140,7 @@
         <div v-else class="flex-1">
 
             <p v-if="!this.getBuildingOrBridgeImage">
-                Click any building to see the data associated with it
+                Click anything to see the data associated with it
             </p>
 
             <!-- <p>Sign up to add stories about buildings</p> -->

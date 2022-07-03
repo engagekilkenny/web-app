@@ -10,9 +10,6 @@ export const landUseHelper = {
         else if (landuse === 'cemetery') {
             return '#808080';
         }
-        else if (landuse === 'commercial') {
-            return '#f6e58d';
-        }
 
         return '#3388ff';
     }

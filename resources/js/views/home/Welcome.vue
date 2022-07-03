@@ -14,7 +14,8 @@
 
                     <router-link
                         to="/map"
-                        class="button is-medium is-info map-button"
+                        tag="button"
+                        class="button is-medium map-button"
                         @click.native="close"
                     >
                         Click here to see the map
@@ -286,6 +287,8 @@ export default {
         display: flex;
         width: 80%;
         height: 4em;
+        background-color: #ffc21e;
+        font-weight: 700;
     }
 
     .about-icon {

@@ -60,6 +60,7 @@ class GlobalMapController extends Controller
         $natural = file_get_contents(public_path('/js/geojson/naturalOSM.geojson'));
         $leisure = file_get_contents(public_path('/js/geojson/leisureOsm.geojson'));
         $amenities = file_get_contents(public_path('/js/geojson/buildingsWithAmenity.geojson'));
+        $rps = file_get_contents(public_path('/js/geojson/rps.geojson'));
 
         return [
             'success' => true,
@@ -79,6 +80,7 @@ class GlobalMapController extends Controller
             'natural' => $natural,
             'leisure' => $leisure,
             'amenities' => $amenities,
+            'rps' => $rps
         ];
     }
 
