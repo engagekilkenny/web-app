@@ -686,7 +686,7 @@ function addBuildingLayers (buildingsGeojson)
     const historicTowerGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'tower');
     const historicWatermillGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'watermill');
     const historicYesGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'yes');
-    const historicArcheologicalGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'archeological_site');
+    const historicArcheologicalGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'archaeological_site');
     const historicHouseGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'house');
     const historicCastleGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'castle');
 
