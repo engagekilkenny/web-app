@@ -13,17 +13,17 @@ class CreateStoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stories', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
-            $table->unsignedBigInteger('osm_id');
-            $table->foreign('osm_id')->references('osm_id')->on('buildings');
-            $table->text('story');
-            $table->string('title');
-            $table->string('date');
-            $table->boolean('reviewed')->default(false);
-            $table->timestamps();
-        });
+//        Schema::create('stories', function (Blueprint $table) {
+//            $table->id();
+//            $table->integer('user_id');
+//            $table->unsignedBigInteger('osm_id');
+//            $table->foreign('osm_id')->references('osm_id')->on('buildings');
+//            $table->text('story');
+//            $table->string('title');
+//            $table->string('date');
+//            $table->boolean('reviewed')->default(false);
+//            $table->timestamps();
+//        });
     }
 
     /**
