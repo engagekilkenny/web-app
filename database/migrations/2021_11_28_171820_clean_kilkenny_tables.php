@@ -15,22 +15,22 @@ class CleanKilkennyTables extends Migration
     {
         Schema::table('photos', function ($table) {
 
-            $table->dropForeign(['smoking_id']);
-            $table->dropForeign(['food_id']);
-            $table->dropForeign(['coffee_id']);
-            $table->dropForeign(['alcohol_id']);
-            $table->dropForeign(['softdrinks_id']);
-            $table->dropForeign(['art_id']);
-            $table->dropForeign(['brands_id']);
-            $table->dropForeign(['sanitary_id']);
-            $table->dropForeign(['political_id']);
-            $table->dropForeign(['pathways_id']);
-            $table->dropForeign(['other_id']);
-            $table->dropForeign(['drugs_id']);
-            $table->dropForeign(['dumping_id']);
-            $table->dropForeign(['industrial_id']);
-            $table->dropForeign(['trashdog_id']);
-            $table->dropForeign(['coastal_id']);
+//            $table->dropForeign(['smoking_id']);
+//            $table->dropForeign(['food_id']);
+//            $table->dropForeign(['coffee_id']);
+//            $table->dropForeign(['alcohol_id']);
+//            $table->dropForeign(['softdrinks_id']);
+//            $table->dropForeign(['art_id']);
+//            $table->dropForeign(['brands_id']);
+//            $table->dropForeign(['sanitary_id']);
+//            $table->dropForeign(['political_id']);
+//            $table->dropForeign(['pathways_id']);
+//            $table->dropForeign(['other_id']);
+//            $table->dropForeign(['drugs_id']);
+//            $table->dropForeign(['dumping_id']);
+//            $table->dropForeign(['industrial_id']);
+//            $table->dropForeign(['trashdog_id']);
+//            $table->dropForeign(['coastal_id']);
 
             $table->dropColumn('smoking_id');
             $table->dropColumn('food_id');
