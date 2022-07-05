@@ -13,13 +13,13 @@ class CreateBuildingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('buildings', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('osm_id')->index();
-            $table->text('attributes');
-            $table->text('polygon');
-            $table->timestamps();
-        });
+//        Schema::create('buildings', function (Blueprint $table) {
+//            $table->id();
+//            $table->unsignedBigInteger('osm_id')->index();
+//            $table->text('attributes');
+//            $table->text('polygon');
+//            $table->timestamps();
+//        });
     }
 
     /**

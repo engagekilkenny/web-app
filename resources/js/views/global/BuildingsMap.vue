@@ -699,7 +699,6 @@ function addBuildingLayers (buildingsGeojson)
     historicHouse = L.geoJSON(historicHouseGeojson, { onEachFeature: onEachBuilding });
     historicCastle = L.geoJSON(historicCastleGeojson, { onEachFeature: onEachBuilding });
 
-
     // Roof Types
     const roofDoubleSaltboxGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'double_saltbox');
     const roofFlatGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'flat');
