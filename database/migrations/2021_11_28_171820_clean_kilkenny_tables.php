@@ -51,26 +51,26 @@ class CleanKilkennyTables extends Migration
 //            $table->dropColumn('dogshit_id');
         });
 
-        Schema::drop('alcohol');
-        Schema::drop('coffee');
-        Schema::drop('arts');
-        Schema::drop('brands');
-        Schema::drop('coastal');
-        Schema::drop('dogshit');
-        Schema::drop('drugs');
-        Schema::drop('dumping');
-        Schema::drop('farming');
-        Schema::drop('food');
-        Schema::drop('global_levels');
-        Schema::drop('halls');
-        Schema::drop('industrial');
-        Schema::drop('old_roles');
-        Schema::drop('pathways');
-        Schema::drop('politicals');
-        Schema::drop('quotes');
-        Schema::drop('sanitary');
-        Schema::drop('smoking');
-        Schema::drop('softdrinks');
-        Schema::drop('trashdog');
+//        Schema::drop('alcohol');
+//        Schema::drop('coffee');
+//        Schema::drop('arts');
+//        Schema::drop('brands');
+//        Schema::drop('coastal');
+//        Schema::drop('dogshit');
+//        Schema::drop('drugs');
+//        Schema::drop('dumping');
+//        Schema::drop('farming');
+//        Schema::drop('food');
+//        Schema::drop('global_levels');
+//        Schema::drop('halls');
+//        Schema::drop('industrial');
+//        Schema::drop('old_roles');
+//        Schema::drop('pathways');
+//        Schema::drop('politicals');
+//        Schema::drop('quotes');
+//        Schema::drop('sanitary');
+//        Schema::drop('smoking');
+//        Schema::drop('softdrinks');
+//        Schema::drop('trashdog');
     }
 }
