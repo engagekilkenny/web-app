@@ -95,7 +95,7 @@ export default {
     @media screen and (max-width: 768px)
     {
         .global-map-container {
-            height: calc(100% - 65px);
+            height: calc(100% - 65px) !important;
         }
     }
 </style>
