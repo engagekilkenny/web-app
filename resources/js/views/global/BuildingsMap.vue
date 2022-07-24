@@ -514,7 +514,8 @@ export default {
             minZoom: MIN_ZOOM
         }).addTo(map);
 
-        map.attributionControl.addAttribution(' Architecture Data &copy NIAH');
+        // taking up too much space on mobile
+        // map.attributionControl.addAttribution(' Architecture Data &copy NIAH');
 
         // Add the layers
         addBuildingLayers(this.$store.state.globalmap.buildings.features);
