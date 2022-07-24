@@ -1663,6 +1663,15 @@ function createLegends ()
         padding: 20px !important;
         /*width: 550px !important;*/
     }
+
+    @media screen and (max-width: 768px)
+    {
+        .leaflet-popup-content {
+            width: 300px;
+        }
+    }
+
+
     .leaflet-control-layers-toggle.leaflet-layerstree-named-toggle {
         margin: 2px 5px;
         width: auto;
