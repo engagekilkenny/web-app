@@ -9,6 +9,7 @@
         <!-- Right-hand form container -->
         <SideMapContainer
             :key="buildingsKey"
+            class="is-hidden-mobile"
         />
 
     </div>
@@ -1633,6 +1634,14 @@ function createLegends ()
         position: relative;
         width: 70%;
     }
+
+    @media screen and (max-width: 768px)
+    {
+        #buildings-map {
+            width: 100%;
+        }
+    }
+
     .leaflet-bottom {
         z-index: 1;
     }

@@ -8,7 +8,7 @@
                         <h1 class="nav-title flex-1">#EngageKilkenny</h1>
 
                         <div
-                            class="ctchc-info"
+                            class="ctchc-info is-hidden-mobile"
                             @click="openCTCHCPage"
                         >
                             <p>
@@ -21,11 +21,11 @@
                     </router-link>
 
                     <!-- Mobile -->
-                    <div :class="burger" @click="toggleOpen">
-                        <span class="is-white" />
-                        <span class="is-white" />
-                        <span class="is-white" />
-                    </div>
+<!--                    <div :class="burger" @click="toggleOpen">-->
+<!--                        <span class="is-white" />-->
+<!--                        <span class="is-white" />-->
+<!--                        <span class="is-white" />-->
+<!--                    </div>-->
                 </div>
 
                 <div :class="nav">
