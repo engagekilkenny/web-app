@@ -2,6 +2,12 @@
     <div class="map-side-container">
         <h1 class="title is-3 pt1">Engage With Kilkenny</h1>
 
+        <img
+            v-if="getBuildingOrBridgeImage"
+            class="building-image"
+            :src="getBuildingOrBridgeImage"
+        />
+
         <div v-if="loggedIn" class="flex-1">
 
             <div v-if="buildingOrBridgeNotSelected">
@@ -132,7 +138,10 @@
         </div>
 
         <div v-else class="flex-1">
-            <p>Click any building to see the data associated with it</p>
+
+            <p v-if="!this.getBuildingOrBridgeImage">
+                Click anything to see the data associated with it
+            </p>
 
             <!-- <p>Sign up to add stories about buildings</p> -->
 
@@ -172,11 +181,11 @@
             </p>
         </div>
 
-        <img
-            v-show="!buildingOrBridgeNotSelected"
-            :src="getBuildingOrBridgeImage"
-            class="side-map-img"
-        />
+<!--        <img-->
+<!--            v-show="!buildingOrBridgeNotSelected"-->
+<!--            :src="getBuildingOrBridgeImage"-->
+<!--            class="side-map-img"-->
+<!--        />-->
 
     </div>
 </template>
@@ -227,6 +236,15 @@ export default {
         };
     },
     computed: {
+
+        /**
+         *
+         */
+        buildingImage ()
+        {
+            return null;
+        },
+
         /**
          * Return True if building and bridge is null
          */
@@ -269,8 +287,6 @@ export default {
          */
         getBuildingOrBridgeImage ()
         {
-            console.log('get image');
-
             if (window.buildingsMap?.building?.REG_NO)
             {
                 return "https://www.buildingsofireland.ie/niah/images/survey_specific/fullsize/" + window.buildingsMap?.building.REG_NO + "_1.jpg";
@@ -442,6 +458,10 @@ export default {
 </script>
 
 <style scoped>
+
+    .building-image {
+        max-height: 30em;
+    }
 
     .building-story {
         text-align: left;

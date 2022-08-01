@@ -20,5 +20,6 @@ export const init = {
     osmBoundaries: null,
     naturalOsm: null,
     lesiure: null,
-    amenities: null
+    amenities: null,
+    rps: null
 };

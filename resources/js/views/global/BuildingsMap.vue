@@ -9,6 +9,7 @@
         <!-- Right-hand form container -->
         <SideMapContainer
             :key="buildingsKey"
+            class="is-hidden-mobile"
         />
 
     </div>
@@ -45,9 +46,15 @@ var buildings, buildingsWithoutYear,
     buildings_1951_2000,
     buildings_2001_2022;
 var vacant, abandoned;
+var wheelchairYes, wheelchairLimited, wheelchairNo;
+var roofs, roofDoubleSaltbox, roofFlat, roofGabled, roofHalfHipped, roofHipped, roofPitched, roofPyramidal, roofRound,
+    roofSaw, roofSkillon, roofSloped;
+var historicChurch, historicRuins, historicTower, historicWatermill, historicYes, historicArcheologicalSite,
+    historicHouse, historicCastle;
+var rps;
 
 var apartmentsPoly, bankPoly, bridgePoly, chapelPoly, churchPoly, cinemaPoly, civicPoly, clinicPoly, collegePoly,
-    commercialPoly, constructionPoly, dovecotePoly, detatchedPoly, fireStationPoly, garagePoly, governmentPoly,
+    commercialPoly, constructionPoly, dovecotePoly, Detached, fireStationPoly, garagePoly, governmentPoly,
     hospitalPoly, hotelPoly, housePoly, industrialPoly, officePoly, publicPoly, residentialPoly, retailPoly,
     roofPoly, ruinsPoly, schoolPoly, servicePoly, shedPoly, stadiumPoly, teahousePoly, terracePoly, towerPoly,
     trainStationPoly, warehousePoly;
@@ -88,8 +95,8 @@ var floodzone;
 
 var layerController;
 
-const green_dot = L.icon({
-    iconUrl: './images/vendor/leaflet/dist/dot.png',
+const purple_dot = L.icon({
+    iconUrl: './images/vendor/leaflet/dist/purpledot.png',
     iconSize: [10, 10]
 });
 
@@ -101,11 +108,11 @@ const grey_dot = L.icon({
 /**
  * Create the point to display for each piece of non-art data
  */
-function createGreenDotIcon (feature, latlng)
+function createPurpledotIcon (feature, latlng)
 {
     const x = [latlng.lat, latlng.lng];
 
-    return L.marker(x, { icon: green_dot });
+    return L.marker(x, { icon: purple_dot });
 }
 
 /**
@@ -238,6 +245,28 @@ function createLayerController ()
                 selectAllCheckbox: false,
                 children: [
                     {
+                        label: ' Age',
+                        children: [
+                            {
+                                label: ' Year Of Construction',
+                                children: [
+                                    { label: ' 1200-1300', layer: buildings_1200_1300 },
+                                    { label: ' 1301-1650', layer: buildings_1301_1605 },
+                                    { label: ' 1651-1765', layer: buildings_1651_1765 },
+                                    { label: ' 1766-1815', layer: buildings_1766_1815 },
+                                    { label: ' 1816-1916', layer: buildings_1816_1916 },
+                                    { label: ' 1917-1950', layer: buildings_1917_1950 },
+                                    { label: ' 1951-2000', layer: buildings_1951_2000 },
+                                    { label: ' 2001-2022', layer: buildings_2001_2022 }
+                                ]
+                            },
+                            {
+                                label: ' Year Missing',
+                                layer: buildingsWithoutYear
+                            }
+                        ]
+                    },
+                    {
                         label: ' Amenities',
                         selectAllCheckbox: false,
                         collapsed: true,
@@ -248,7 +277,7 @@ function createLayerController ()
                             { label: ' Cafe', layer: cafeAmenity },
                             { label: ' Car Wash', layer: carWashAmenity },
                             { label: ' Cinema', layer: cinemaAmenity },
-                            { label: ' Clinic', layer: clinicAmenity },
+                            // { label: ' Clinic', layer: clinicAmenity }, not in the data
                             { label: ' College', layer: collegeAmenity },
                             { label: ' Community Centre', layer: communityCentreAmenity },
                             { label: ' Courthouse', layer: courtHouseAmenity },
@@ -258,8 +287,7 @@ function createLayerController ()
                             { label: ' Fuel', layer: fuelAmenity },
                             { label: ' Graveyard', layer: graveyardAmenity },
                             { label: ' Library', layer: libraryAmenity },
-                            { label: ' Kindergarten', layer: kindergartenAmenity },
-                            { label: ' Parking', layer: parkingAmenity },
+                            // { label: ' Kindergarten', layer: kindergartenAmenity }, gdpr?
                             { label: ' Pharmacy', layer: pharmacyAmenity },
                             { label: ' Place of Worship', layer: placeOfWorshipAmenity },
                             { label: ' Police', layer: policeAmenity },
@@ -272,32 +300,47 @@ function createLayerController ()
                             { label: ' Taxi', layer: taxiAmenity },
                             { label: ' Theatre', layer: theatreAmenity },
                             { label: ' Townhall', layer: townhallAmenity },
-                            { label: ' Vetinary', layer: vetinaryAmenity},
+                            { label: ' Vetinary', layer: vetinaryAmenity },
                         ]
                     },
                     {
                         label: 'Dereliction',
+                        collapsed: true,
                         children: [
                             { label: ' Abandoned', layer: abandoned },
                             { label: ' Vacant', layer: vacant }
                         ]
                     },
                     {
-                        label: ' Year Of Construction',
+                        label: ' Historic',
+                        collapsed: true,
                         children: [
-                            { label: ' 1200-1300', layer: buildings_1200_1300 },
-                            { label: ' 1301-1650', layer: buildings_1301_1605 },
-                            { label: ' 1651-1765', layer: buildings_1651_1765 },
-                            { label: ' 1766-1815', layer: buildings_1766_1815 },
-                            { label: ' 1816-1916', layer: buildings_1816_1916 },
-                            { label: ' 1917-1950', layer: buildings_1917_1950 },
-                            { label: ' 1951-2000', layer: buildings_1951_2000 },
-                            { label: ' 2001-2022', layer: buildings_2001_2022 }
+                            { label: ' Archaeological', layer: historicArcheologicalSite },
+                            { label: ' Castle', layer: historicCastle },
+                            { label: ' Church', layer: historicChurch },
+                            { label: ' House', layer: historicHouse },
+                            { label: ' Ruins', layer: historicRuins },
+                            { label: ' Tower', layer: historicTower },
+                            { label: ' Watermill', layer: historicWatermill },
+                            { label: ' Yes', layer: historicYes }
                         ]
                     },
                     {
-                        label: ' Year Missing',
-                        layer: buildingsWithoutYear
+                        label: 'Roof Types',
+                        collapsed: true,
+                        children: [
+                            { label: ' Double saltbox', layer: roofDoubleSaltbox },
+                            { label: ' Flat', layer:  roofFlat },
+                            { label: ' Gabled', layer: roofGabled },
+                            { label: ' Half-hipped', layer: roofHalfHipped },
+                            { label: ' Hipped', layer: roofHipped },
+                            { label: ' Pitched', layer: roofPitched },
+                            { label: ' Pyramidal', layer: roofPyramidal },
+                            { label: ' Round', layer: roofRound },
+                            { label: ' Saw', layer: roofSaw },
+                            { label: ' Skillion', layer: roofSkillon },
+                            { label: ' Sloped', layer: roofSloped }
+                        ]
                     },
                     {
                         label: ' Types',
@@ -307,16 +350,16 @@ function createLayerController ()
                             { label: ' Apartments', layer: apartmentsPoly },
                             { label: ' Bank', layer: bankPoly },
                             { label: ' Bridge', layer: bridgePoly },
-                            { label: ' Chapel', layer: chapelPoly },
+                            // { label: ' Chapel', layer: chapelPoly }, not found
                             { label: ' Church', layer: churchPoly },
                             { label: ' Cinema', layer: cinemaPoly },
                             { label: ' Civic', layer: civicPoly },
-                            { label: ' Clinic', layer: clinicPoly },
+                            // { label: ' Clinic', layer: clinicPoly },
                             { label: ' College', layer: collegePoly },
                             { label: ' Commercial', layer: commercialPoly },
                             { label: ' Construction', layer: constructionPoly },
                             { label: ' Dovecote', layer: dovecotePoly },
-                            { label: ' Detatched', layer: detatchedPoly },
+                            { label: ' Detached', layer: Detached },
                             { label: ' Fire Station', layer: fireStationPoly },
                             { label: ' Garage', layer: garagePoly },
                             { label: ' Government', layer: governmentPoly },
@@ -329,16 +372,24 @@ function createLayerController ()
                             { label: ' Residential', layer: residentialPoly },
                             { label: ' Retail', layer: retailPoly },
                             { label: ' Roof', layer: roofPoly },
-                            { label: ' Ruins', layer: ruinsPoly },
                             { label: ' School', layer: schoolPoly },
                             { label: ' Service', layer: servicePoly },
                             { label: ' Shed', layer: shedPoly },
                             { label: ' Stadium', layer: stadiumPoly },
                             { label: ' Teahouse', layer: teahousePoly },
-                            { label: ' Terrace', layer: terracePoly },
+                            // { label: ' Terrace', layer: terracePoly }, not found
                             { label: ' Tower', layer: towerPoly },
                             { label: ' Train Station', layer: trainStationPoly },
                             { label: ' Warehouse', layer: warehousePoly }
+                        ]
+                    },
+                    {
+                        label: ' Wheelchair',
+                        collapsed: true,
+                        children: [
+                            { label: ' Yes', layer: wheelchairYes },
+                            { label: ' Limited', layer: wheelchairLimited },
+                            { label: ' No', layer: wheelchairNo }
                         ]
                     }
                 ]
@@ -348,12 +399,14 @@ function createLayerController ()
                 collapsed: true,
                 selectAllCheckbox: false,
                 children: [
-                    { label: ' Archealogical', layer: archaeological },
+                    { label: ' Archeological', layer: archaeological },
                     { label: ' City Gate', layer: cityGate },
                     { label: ' Memorial', layer: memorial },
                     { label: ' Protected Monuments', layer: monuments },
+                    { label: ' Protected Structures', layer: rps },
                     { label: ' Ogham Stone', layer: oghamStone },
                     { label: ' Other', layer: historic },
+                    { label: ' Ruins', layer: ruinsPoly },
                     { label: ' Street Lamp', layer: streetLamp },
                     { label: ' Talbot\s Tower', layer: talbotsTower },
                     { label: ' Tomb', layer: tomb },
@@ -378,7 +431,7 @@ function createLayerController ()
                     { label: ' Industrial', layer: industrial },
                     {
                         label: ' Leisure',
-                        collapsed: false,
+                        collapsed: true,
                         selectAllCheckbox: false,
                         children: [
                             { label: ' Garden', layer: garden },
@@ -393,6 +446,7 @@ function createLayerController ()
                     { label: ' Meadow', layer: meadow },
                     { label: ' Natural', layer: naturalOsm },
                     { label: ' Orchard', layer: orchard },
+                    { label: ' Parking', layer: parkingAmenity },
                     { label: ' Railway', layer: railway },
                     { label: ' Religious', layer: religious },
                     { label: ' Residential', layer: residentialLandUse },
@@ -460,7 +514,8 @@ export default {
             minZoom: MIN_ZOOM
         }).addTo(map);
 
-        map.attributionControl.addAttribution(' Architecture Data &copy NIAH');
+        // taking up too much space on mobile
+        // map.attributionControl.addAttribution(' Architecture Data &copy NIAH');
 
         // Add the layers
         addBuildingLayers(this.$store.state.globalmap.buildings.features);
@@ -480,6 +535,7 @@ export default {
         addNaturalOsm(this.$store.state.globalmap.naturalOsm);
         addLeisureOsm(this.$store.state.globalmap.leisure);
         addAmenitiesOsm(this.$store.state.globalmap.amenities);
+        addRPSLayer(this.$store.state.globalmap.rps);
 
         window.buildingsMap.buildings = buildings;
 
@@ -503,18 +559,9 @@ export default {
  */
 function addBuildingLayers (buildingsGeojson)
 {
-    buildings = L.geoJSON(null, {
-        onEachFeature: onEachBuilding
-    });
-
     // Without Year
     const filteredBuildingsWithYear = buildingsGeojson.filter(feature => {
         return (feature.properties.hasOwnProperty('NEWDATE'));
-    });
-
-    buildings.addData({
-        features: filteredBuildingsWithYear,
-        type: "FeatureCollection"
     });
 
     buildingsWithoutYear = L.geoJSON(null, {
@@ -533,6 +580,10 @@ function addBuildingLayers (buildingsGeojson)
     });
 
     // With Year
+    buildings = L.geoJSON(filteredBuildingsWithYear, {
+        onEachFeature: onEachBuilding
+    });
+
     const buildings_1200_1300_JS = buildingsHelper.getBuildingByYear(filteredBuildingsWithYear, 1200, 1300);
     const buildings_1301_1605_JS = buildingsHelper.getBuildingByYear(filteredBuildingsWithYear, 1301, 1605);
     const buildings_1651_1765_JS = buildingsHelper.getBuildingByYear(filteredBuildingsWithYear, 1651, 1765);
@@ -563,7 +614,7 @@ function addBuildingLayers (buildingsGeojson)
     const commercialArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'commercial');
     const constructionArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'construction');
     const dovecoteArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'dovecote');
-    const detatchedArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'detatched');
+    const detachedArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'detached');
     const fireStationArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'fire_station');
     const garageArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'garage');
     const governmentArray = streetsHelper.getStreetByType(buildingsGeojson, 'building', 'government');
@@ -599,7 +650,7 @@ function addBuildingLayers (buildingsGeojson)
     commercialPoly = L.geoJSON(commercialArray, { onEachFeature: onEachDefaultLayer });
     constructionPoly = L.geoJSON(constructionArray, { onEachFeature: onEachDefaultLayer });
     dovecotePoly = L.geoJSON(dovecoteArray, { onEachFeature: onEachDefaultLayer });
-    detatchedPoly = L.geoJSON(detatchedArray, { onEachFeature: onEachDefaultLayer });
+    Detached = L.geoJSON(detachedArray, { onEachFeature: onEachDefaultLayer });
     fireStationPoly = L.geoJSON(fireStationArray, { onEachFeature: onEachDefaultLayer });
     garagePoly = L.geoJSON(garageArray, { onEachFeature: onEachDefaultLayer });
     governmentPoly = L.geoJSON(governmentArray, { onEachFeature: onEachDefaultLayer });
@@ -623,23 +674,66 @@ function addBuildingLayers (buildingsGeojson)
     trainStationPoly = L.geoJSON(trainStationAarray, { onEachFeature: onEachDefaultLayer });
     warehousePoly = L.geoJSON(warehouseArray, { onEachFeature: onEachDefaultLayer });
 
-    // Vacant
-    const vacantGeojson = buildingsGeojson.filter(feature => {
-        return (feature.properties.vacant === "yes");
-    });
-
-    vacant = L.geoJSON(vacantGeojson, {
-        onEachFeature: onEachBuilding
-    });
-
     // Abandoned
-    const abandonedGeojson = buildingsGeojson.filter(feature => {
-       return (feature.properties.abandoned === "yes");
-    });
+    const abandonedGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'abandoned', 'yes');
+    abandoned = L.geoJSON(abandonedGeojson, { onEachFeature: onEachBuilding });
 
-    abandoned = L.geoJSON(abandonedGeojson, {
-        onEachFeature: onEachDefaultLayer
-    });
+    // Vacant
+    const vacantGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'vacant', 'yes');
+    vacant = L.geoJSON(vacantGeojson, { onEachFeature: onEachBuilding });
+
+    // Historic
+    const historicChurchGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'church');
+    const historicRuinsGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'ruins');
+    const historicTowerGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'tower');
+    const historicWatermillGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'watermill');
+    const historicYesGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'yes');
+    const historicArcheologicalGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'archaeological_site');
+    const historicHouseGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'house');
+    const historicCastleGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'historic', 'castle');
+
+    historicChurch = L.geoJSON(historicChurchGeojson, { onEachFeature: onEachBuilding });
+    historicRuins = L.geoJSON(historicRuinsGeojson, { onEachFeature: onEachBuilding });
+    historicTower = L.geoJSON(historicTowerGeojson, { onEachFeature: onEachBuilding });
+    historicWatermill = L.geoJSON(historicWatermillGeojson, { onEachFeature: onEachBuilding });
+    historicYes = L.geoJSON(historicYesGeojson, { onEachFeature: onEachBuilding });
+    historicArcheologicalSite = L.geoJSON(historicArcheologicalGeojson, { onEachFeature: onEachBuilding });
+    historicHouse = L.geoJSON(historicHouseGeojson, { onEachFeature: onEachBuilding });
+    historicCastle = L.geoJSON(historicCastleGeojson, { onEachFeature: onEachBuilding });
+
+    // Roof Types
+    const roofDoubleSaltboxGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'double_saltbox');
+    const roofFlatGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'flat');
+    const roofGabledGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'gabled');
+    const roofHalfHippedGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'half-hipped');
+    const roofHippedGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'hipped');
+    const roofPitchedGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'pitched');
+    const roofPyramidalGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'pyramidal');
+    const roofRoundGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'round');
+    const roofSawGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'saw');
+    const roofSkillionGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'skillion');
+    const roofSlopedGeojson = streetsHelper.getStreetByType(buildingsGeojson, 'roof_shape', 'sloped');
+
+    roofDoubleSaltbox = L.geoJSON(roofDoubleSaltboxGeojson, { onEachFeature: onEachBuilding });
+    roofFlat = L.geoJSON(roofFlatGeojson, { onEachFeature: onEachBuilding });
+    roofGabled = L.geoJSON(roofGabledGeojson, { onEachFeature: onEachBuilding });
+    roofHalfHipped = L.geoJSON(roofHalfHippedGeojson, { onEachFeature: onEachBuilding });
+    roofHipped = L.geoJSON(roofHippedGeojson, { onEachFeature: onEachBuilding });
+    roofPitched = L.geoJSON(roofPitchedGeojson, { onEachFeature: onEachBuilding });
+    roofPyramidal = L.geoJSON(roofPyramidalGeojson, { onEachFeature: onEachBuilding });
+    roofRound = L.geoJSON(roofRoundGeojson, { onEachFeature: onEachBuilding });
+    roofSaw = L.geoJSON(roofSawGeojson, { onEachFeature: onEachBuilding });
+    roofSkillon = L.geoJSON(roofSkillionGeojson, { onEachFeature: onEachBuilding });
+    roofSloped = L.geoJSON(roofSlopedGeojson, { onEachFeature: onEachBuilding });
+
+    // Wheelchair
+    const wheelchairGeojsonYes = streetsHelper.getStreetByType(buildingsGeojson, 'wheelchair', 'yes');
+    const wheelchairGeojsonLimited = streetsHelper.getStreetByType(buildingsGeojson, 'wheelchair', 'limited');
+    const wheelchairGeojsonNo = streetsHelper.getStreetByType(buildingsGeojson, 'wheelchair', 'no');
+
+    wheelchairYes = L.geoJSON(wheelchairGeojsonYes, { onEachFeature: onEachBuilding });
+    wheelchairLimited = L.geoJSON(wheelchairGeojsonLimited, { onEachFeature: onEachBuilding });
+    wheelchairNo = L.geoJSON(wheelchairGeojsonNo, { onEachFeature: onEachBuilding });
 }
 /**
  * On each building feature
@@ -813,7 +907,7 @@ function addMonumentsLayer (monumentsArray)
 {
     monuments = L.geoJSON(null, {
         onEachFeature: onEachMonument,
-        pointToLayer: createGreenDotIcon
+        pointToLayer: createPurpledotIcon
     });
     monuments.addData({
         features: monumentsArray,
@@ -936,6 +1030,14 @@ function addLeisureOsm (leisureGeojson)
     stadium = L.geoJSON(stadiumArray, { onEachFeature: onEachDefaultLayer });
 }
 
+function addRPSLayer (rpsGeojson)
+{
+    rps = L.geoJSON(rpsGeojson, {
+        onEachFeature: onEachDefaultLayer,
+        pointToLayer: createGreyDotIcon
+    });
+}
+
 function addAmenitiesOsm (amenitiesGeojson)
 {
     const bankArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'bank');
@@ -944,7 +1046,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     const cafeArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'cafe');
     const carWashArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'car_wash');
     const cinemaArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'cinema');
-    const clinicArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'clinic');
+    // const clinicArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'clinic'); // not found in the data
     const collegeArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'college');
     const communityCentreArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'community_centre');
     const courtHouseArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'courthouse');
@@ -968,7 +1070,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     const taxiArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'taxi');
     const theatreArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'theatre');
     const townhallArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'townhall');
-    const vetinaryArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'vetinary');
+    const vererinaryArray = streetsHelper.getStreetByType(amenitiesGeojson.features, 'amenity', 'veterinary');
 
     bankAmenity = L.geoJSON(bankArray, { onEachFeature: onEachDefaultLayer });
     barAmenity = L.geoJSON(barArray, { onEachFeature: onEachDefaultLayer });
@@ -976,7 +1078,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     cafeAmenity = L.geoJSON(cafeArray, { onEachFeature: onEachDefaultLayer });
     carWashAmenity = L.geoJSON(carWashArray, { onEachFeature: onEachDefaultLayer });
     cinemaAmenity = L.geoJSON(cinemaArray, { onEachFeature: onEachDefaultLayer });
-    clinicAmenity = L.geoJSON(clinicArray, { onEachFeature: onEachDefaultLayer });
+    // clinicAmenity = L.geoJSON(clinicArray, { onEachFeature: onEachDefaultLayer });
     collegeAmenity = L.geoJSON(collegeArray, { onEachFeature: onEachDefaultLayer });
     communityCentreAmenity = L.geoJSON(communityCentreArray, { onEachFeature: onEachDefaultLayer });
     courtHouseAmenity = L.geoJSON(courtHouseArray, { onEachFeature: onEachDefaultLayer });
@@ -1000,7 +1102,7 @@ function addAmenitiesOsm (amenitiesGeojson)
     taxiAmenity = L.geoJSON(taxiArray, { onEachFeature: onEachDefaultLayer });
     theatreAmenity = L.geoJSON(theatreArray, { onEachFeature: onEachDefaultLayer });
     townhallAmenity = L.geoJSON(townhallArray, { onEachFeature: onEachDefaultLayer });
-    vetinaryAmenity = L.geoJSON(vetinaryArray, { onEachFeature: onEachDefaultLayer });
+    vetinaryAmenity = L.geoJSON(vererinaryArray, { onEachFeature: onEachDefaultLayer });
 }
 
 function addOsmBoundaries (osmBoundariesGeojson)
@@ -1021,18 +1123,21 @@ function onEachDefaultLayer (feature, layer)
     layer.on('click', function (e)
     {
         const { str } = streetsHelper.getStringObject(feature.properties);
+
         L.popup(mapHelper.popupOptions)
             .setLatLng(e.latlng)
             .setContent(str)
             .openOn(map);
         L.DomEvent.stopPropagation(e);
     });
+
     layer.on("mouseover", function(e) {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
+
     layer.on("mouseout",function(e) {
         layer.setStyle({
             fillOpacity: 0.5,
@@ -1046,6 +1151,7 @@ function addLandUseTypes (landUseGeoJson)
     landUseTypes = L.geoJSON(landUseGeoJson, {
         onEachFeature: onEachLandUseType
     });
+
     const brownFieldArray = streetsHelper.getStreetByType(landUseGeoJson.features, 'landuse', 'brownfield');
     const cemeteryArray = streetsHelper.getStreetByType(landUseGeoJson.features, 'landuse', 'cemetery');
     const commercialArray = streetsHelper.getStreetByType(landUseGeoJson.features, 'landuse', 'commercial');
@@ -1082,13 +1188,16 @@ function addLandUseTypes (landUseGeoJson)
 function onEachLandUseType (feature, layer)
 {
     const colour = landUseHelper.getColour(feature.properties.landuse);
+
     layer.setStyle({
         fillOpacity: 0.4,
         color: colour
     });
+
     layer.on('click', function (e)
     {
         const { str, bridge } = streetsHelper.getStringObject(feature.properties);
+
         // window.buildingsMap.bridge = bridge;
         L.popup(mapHelper.popupOptions)
             .setLatLng(e.latlng)
@@ -1097,12 +1206,14 @@ function onEachLandUseType (feature, layer)
         // window.buildingsMap.buildingsKey++;
         L.DomEvent.stopPropagation(e);
     });
+
     layer.on("mouseover", function(e) {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
+
     layer.on("mouseout",function(e) {
         layer.setStyle({
             fillOpacity: 0.5,
@@ -1122,12 +1233,14 @@ function onEachFloodZone (feature, layer)
             .openOn(map);
         L.DomEvent.stopPropagation(e);
     });
+
     layer.on("mouseover", function(e) {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
+
     layer.on("mouseout",function(e) {
         layer.setStyle({
             fillOpacity: 0.5,
@@ -1145,12 +1258,14 @@ function onEachParish (feature, layer)
             .openOn(map);
         L.DomEvent.stopPropagation(e);
     });
+
     layer.on("mouseover", function(e) {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
+
     layer.on("mouseout",function(e) {
         layer.setStyle({
             fillOpacity: 0.5,
@@ -1167,13 +1282,16 @@ function onCityBoundary (feature, layer)
             .setLatLng(e.latlng)
             .setContent(str)
             .openOn(map);
-        L.DomEvent.stopPropagation(e);    });
+        L.DomEvent.stopPropagation(e);
+    });
+
     layer.on("mouseover", function(e) {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
+
     layer.on("mouseout",function(e) {
         layer.setStyle({
             fillOpacity: 0.5,
@@ -1195,12 +1313,14 @@ function onEachBridge (feature, layer)
         window.buildingsMap.buildingsKey++;
         L.DomEvent.stopPropagation(e);
     });
+
     layer.on("mouseover", function(e) {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
+
     layer.on("mouseout",function(e) {
         layer.setStyle({
             fillOpacity: 0.5,
@@ -1226,49 +1346,51 @@ function addPointsLayers (pointsArray)
 {
     // 1. Create empty L.geoJSON layers
     // All Types
-    points = L.geoJson(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
+    points = L.geoJson(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+
     // Each Filtered Type (41)
-    artsCentre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    atm = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    bank = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    bar = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    bench = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    bicyclingParking = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    cafe = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    carWash = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    chargingStation = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    clock = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    college = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    communityCentre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    dentist = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    doctors = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    fastFood = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    fountain = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    gritBin = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    kitchen = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    library = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    marketplace = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    motorcycleParking = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    musicSchool = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    parking = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    parkingEntrance = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    pharmacy = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    placeOfWorship = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    postBox = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    postOffice = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    pub = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    publicOffice = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    recycling = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    restaurant = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    socialCentre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    studio = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    telephone = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    theatre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    toilets = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    training = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    vendingMachines = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    wasteBasket = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
-    wateringPlace = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreenDotIcon });
+    artsCentre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    atm = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    bank = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    bar = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    bench = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    bicyclingParking = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    cafe = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    carWash = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    chargingStation = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    clock = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    college = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    communityCentre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    dentist = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    doctors = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    fastFood = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    fountain = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    gritBin = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    kitchen = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    library = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    marketplace = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    motorcycleParking = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    musicSchool = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    parking = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    parkingEntrance = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    pharmacy = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    placeOfWorship = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    postBox = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    postOffice = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    pub = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    publicOffice = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    recycling = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    restaurant = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    socialCentre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    studio = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    telephone = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    theatre = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    toilets = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    training = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    vendingMachines = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    wasteBasket = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+    wateringPlace = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createPurpledotIcon });
+
     // 2. Create a filtered geojson array of each layer we want to use
     // Get array of streets of column name "highway"
     const filteredPointsArray = streetsHelper.getFilteredArray(pointsArray, 'amenity');
@@ -1286,7 +1408,7 @@ function addPointsLayers (pointsArray)
     const collegeArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'college');
     const communityCentreArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'community_centre');
     const dentistArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'dentist');
-    const doctorArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'doctor');
+    const doctorArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'doctors');
     const fastFoodArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'fast_food');
     const fountainArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'fountain');
     const gritBinArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'grit_bin');
@@ -1314,7 +1436,9 @@ function addPointsLayers (pointsArray)
     const vendingMachineArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'vending_machine');
     const wasteBasketArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'waste_basket');
     const wateringPlaceArray = streetsHelper.getStreetByType(filteredPointsArray, 'amenity', 'watering_place');
+
     points.addData({ features: filteredPointsArray, type: "FeatureCollection" });
+
     atm.addData({ features: atmArray, type: "FeatureCollection" });
     artsCentre.addData({ features: artsCentreArray, type: "FeatureCollection" });
     bank.addData({ features: bankArray, type: "FeatureCollection" });
@@ -1360,12 +1484,15 @@ function addPointsLayers (pointsArray)
 
 function onEachPoint (feature, layer)
 {
-    layer.on('click', async function (e) {
+    layer.on('click', async function (e)
+    {
         const str = wallsHelper.getWallsString(feature.properties);
+
         L.popup(mapHelper.popupOptions)
             .setLatLng(e.latlng)
             .setContent(str)
             .openOn(map);
+
         L.DomEvent.stopPropagation(e);
     });
 }
@@ -1375,20 +1502,26 @@ function addWallsLayer (wallsArray, pointsArray)
     walls = L.geoJSON(null, {
         onEachFeature: onEachWalls
     }).addTo(map);
+
     walls.addData({ features: wallsArray, type: "FeatureCollection" });
+
     // Parent array
-    historic = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
+    historic = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+
     // Child arrays from historic
-    archaeological = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
-    cityGate = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
-    memorial = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
-    oghamStone = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
-    streetLamp = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
-    tomb = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
-    uncategorised = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createGreenDotIcon });
+    archaeological = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+    cityGate = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+    memorial = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+    oghamStone = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+    streetLamp = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+    tomb = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+    uncategorised = L.geoJSON(null, { onEachFeature: onEachWalls, pointToLayer: createPurpledotIcon });
+
     // All historic points
     const filteredHistoricArray = streetsHelper.getFilteredArray(pointsArray, 'historic');
+
     historic.addData({ features: filteredHistoricArray, type: "FeatureCollection" });
+
     // Filter all historic points by values
     const archeologicalArray = streetsHelper.getStreetByType(pointsArray, 'historic', 'archaeological_site');
     const cityGateArray = streetsHelper.getStreetByType(pointsArray, 'historic', 'city_gate');
@@ -1397,6 +1530,7 @@ function addWallsLayer (wallsArray, pointsArray)
     const streetLampArray = streetsHelper.getStreetByType(pointsArray, 'historic', 'street_lamp');
     const tombArray = streetsHelper.getStreetByType(pointsArray, 'historic', 'tomb');
     const uncategorisedArray = streetsHelper.getStreetByType(pointsArray, 'historic', 'yes');
+
     archaeological.addData({ features: archeologicalArray, type: "FeatureCollection" });
     cityGate.addData({ features: cityGateArray, type: "FeatureCollection" });
     memorial.addData({ features: memorialArray, type: "FeatureCollection "});
@@ -1409,8 +1543,10 @@ function addWallsLayer (wallsArray, pointsArray)
 function addArtLayer (pointsArray)
 {
     art = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreyDotIcon });
+
     // All art points
     const filteredArtArray = streetsHelper.getFilteredArray(pointsArray, 'artwork_type');
+
     historic.addData({ features: filteredArtArray, type: "FeatureCollection" });
     graffiti = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreyDotIcon });
     mural = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreyDotIcon });
@@ -1418,6 +1554,7 @@ function addArtLayer (pointsArray)
     sculpture = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreyDotIcon });
     stainedGlassWindow = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreyDotIcon });
     statue = L.geoJSON(null, { onEachFeature: onEachPoint, pointToLayer: createGreyDotIcon });
+
     // Filtered art points
     const graffitiArray = streetsHelper.getStreetByType(filteredArtArray, 'artwork_type', 'graffiti');
     const muralArray = streetsHelper.getStreetByType(filteredArtArray, 'artwork_type', 'mural');
@@ -1425,6 +1562,7 @@ function addArtLayer (pointsArray)
     const scultpureArray = streetsHelper.getStreetByType(filteredArtArray, 'artwork_type', 'sculpture');
     const stainedGlassArray = streetsHelper.getStreetByType(filteredArtArray, 'artwork_type', 'stained-glass_window');
     const statueArray = streetsHelper.getStreetByType(filteredArtArray, 'artwork_type', 'mural');
+
     graffiti.addData({ features: graffitiArray, type: "FeatureCollection" });
     mural.addData({ features: muralArray, type: "FeatureCollection" });
     relief.addData({ features: reliefArray, type: "FeatureCollection" });
@@ -1437,24 +1575,31 @@ function addArtLayer (pointsArray)
  */
 function onEachWalls (feature, layer)
 {
-    layer.on("mouseover", function(e) {
+    layer.on("mouseover", function(e)
+    {
         layer.setStyle({
             fillOpacity: 0.4,
             color: 'yellow'
         });
     });
-    layer.on("mouseout",function(e) {
+
+    layer.on("mouseout",function(e)
+    {
         layer.setStyle({
             fillOpacity: 0.5,
             color: '#3388ff'
         });
     });
-    layer.on('click', async function (e) {
+
+    layer.on('click', async function (e)
+    {
         const str = wallsHelper.getWallsString(feature.properties);
+
         L.popup(mapHelper.popupOptions)
             .setLatLng(e.latlng)
             .setContent(str)
             .openOn(map);
+
         L.DomEvent.stopPropagation(e);
     });
 }
@@ -1465,6 +1610,7 @@ function createLegends ()
     let legend = L.control({
         position: 'bottomleft'
     });
+
     legend.onAdd = function (map) {
         let legend = L.DomUtil.create('div', 'info legend');
         legend.innerHTML += '<i style="background:' + buildingsHelper.getBuildingsColour(1200) + '"></i> 1200 - 1300' + '<br>';
@@ -1477,6 +1623,7 @@ function createLegends ()
         legend.innerHTML += '<i style="background:' + buildingsHelper.getBuildingsColour(1816) + '"></i> 2001 - 2022' + '<br>';
         return legend;
     };
+
     legend.addTo(map);
 }
 </script>
@@ -1488,6 +1635,14 @@ function createLegends ()
         position: relative;
         width: 70%;
     }
+
+    @media screen and (max-width: 768px)
+    {
+        #buildings-map {
+            width: 100%;
+        }
+    }
+
     .leaflet-bottom {
         z-index: 1;
     }
@@ -1508,6 +1663,15 @@ function createLegends ()
         padding: 20px !important;
         /*width: 550px !important;*/
     }
+
+    @media screen and (max-width: 768px)
+    {
+        .leaflet-popup-content {
+            width: 300px;
+        }
+    }
+
+
     .leaflet-control-layers-toggle.leaflet-layerstree-named-toggle {
         margin: 2px 5px;
         width: auto;

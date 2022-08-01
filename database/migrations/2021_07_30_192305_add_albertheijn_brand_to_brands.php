@@ -27,7 +27,7 @@ class AddAlbertheijnBrandToBrands extends Migration
     public function down()
     {
         Schema::table('brands', function (Blueprint $table) {
-            $table->dropColumn('albertheijn');
+            // $table->dropColumn('albertheijn');
         });
     }
 }

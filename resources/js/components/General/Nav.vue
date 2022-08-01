@@ -2,18 +2,30 @@
     <div>
         <nav class="navbar main-nav">
             <div class="container">
-                <div class="navbar-brand">
+                <div class="w100 flex">
 
-                    <router-link to="/" class="navbar-item">
-                        <h1 class="nav-title">#EngageKilkenny</h1>
+                    <router-link to="/" class="navbar-item flex-1">
+                        <h1 class="nav-title flex-1">#EngageKilkenny</h1>
+
+                        <div
+                            class="ctchc-info is-hidden-mobile"
+                            @click="openCTCHCPage"
+                        >
+                            <p>
+                                Brought to you by the Collaborative Town Centre Health Check (CTCHC)
+                            </p>
+
+                            <p class="has-text-centered">and the Heritage Council.</p>
+                        </div>
+
                     </router-link>
 
                     <!-- Mobile -->
-                    <div :class="burger" @click="toggleOpen">
-                        <span class="is-white" />
-                        <span class="is-white" />
-                        <span class="is-white" />
-                    </div>
+<!--                    <div :class="burger" @click="toggleOpen">-->
+<!--                        <span class="is-white" />-->
+<!--                        <span class="is-white" />-->
+<!--                        <span class="is-white" />-->
+<!--                    </div>-->
                 </div>
 
                 <div :class="nav">
@@ -163,15 +175,21 @@ export default {
             return this.open ? 'navbar-menu is-active' : 'navbar-menu';
         }
     },
-
     methods: {
-
         /**
          * Mobile - Close the nav
          */
         close ()
         {
             this.open = false;
+        },
+
+        /**
+         * Open the CTCHC website in another page
+         */
+        openCTCHCPage ()
+        {
+            window.open("https://www.heritagecouncil.ie/projects/town-centre-health-check-programme", "_blank");
         },
 
         /**
@@ -211,6 +229,14 @@ export default {
         align-self: center;
     }
 
+    .ctchc-info {
+        color: white;
+    }
+
+    .ctchc-info:hover {
+        color: #ffc21e;
+    }
+
     .drop-item {
         color: black;
         font-weight: 500;
@@ -231,6 +257,10 @@ export default {
         font-size: 2.5rem;
         font-weight: 600;
         line-height: 1.125;
+    }
+
+    .nav-title:hover {
+        color: #ffc21e;
     }
 
     .is-white {

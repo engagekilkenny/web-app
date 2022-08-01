@@ -42,6 +42,7 @@ export const actions = {
                     context.commit('setNaturalOsm', JSON.parse(response.data.natural));
                     context.commit('setLeisureOsm', JSON.parse(response.data.leisure));
                     context.commit('setAmenitiesOsm', JSON.parse(response.data.amenities));
+                    context.commit('setRPS', JSON.parse(response.data.rps));
                 }
             })
             .catch(error => {
