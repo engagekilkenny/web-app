@@ -821,6 +821,7 @@ function addStreetLayers (streetsArray)
     // 2. Create a filtered geojson array of each layer we want to use
     // Get array of streets of column name "highway"
     const filteredStreetsArray = streetsHelper.getFilteredArray(streetsArray, 'highway');
+
     // Using street.highway, create filteredArray for various highway values
     const corridorArray = streetsHelper.getStreetByType(filteredStreetsArray, 'highway', 'corridor');
     const footwayArray = streetsHelper.getStreetByType(filteredStreetsArray, 'highway', 'footway');
@@ -836,6 +837,7 @@ function addStreetLayers (streetsArray)
     // 3.1 Add the filtered array to the empty geojson layer
     streetTypes.addData({ features: filteredStreetsArray, type: "FeatureCollection" });
     // 3.2 Add each filtered value type to the empty geojson layer
+
     corridor.addData({ features: corridorArray, type: "FeatureCollection" });
     footway.addData({ features: footwayArray, type: "FeatureCollection" });
     path.addData({ features: pathArray, type: "FeatureCollection" });
