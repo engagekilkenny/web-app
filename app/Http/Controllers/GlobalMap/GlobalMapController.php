@@ -24,9 +24,9 @@ class GlobalMapController extends Controller
         $streets = Street::all();
 
         $buildingsGeojson = $this->createGeoJsonArray($buildings);
-//        $streetsGeoJson = $this->createGeoJsonArray($streets);
+        $streetsGeoJson = $this->createGeoJsonArray($streets, "MultiLineString");
 
-         $streets = file_get_contents(public_path('/js/geojson/streets.geojson'));
+        // $streets = file_get_contents(public_path('/js/geojson/streets.geojson'));
         $walls = file_get_contents(public_path('/js/geojson/newWalls2.geojson'));
         $points = file_get_contents(public_path('/js/geojson/points.geojson'));
         $monuments = file_get_contents(public_path('/js/geojson/monuments.geojson'));
@@ -46,7 +46,7 @@ class GlobalMapController extends Controller
         return [
             'success' => true,
             'buildings' => $buildingsGeojson,
-            'streets' => $streets,
+            'streets' => $streetsGeoJson,
             'walls' => $walls,
             'points' => $points,
             'monuments' => $monuments,
@@ -68,7 +68,7 @@ class GlobalMapController extends Controller
     /**
      * Helper function to create GeoJson from an array of features.
      */
-    private function createGeoJsonArray ($features)
+    private function createGeoJsonArray ($features, $type = "MultiPolygon")
     {
         $geojson = [
             'type' => 'FeatureCollection',
@@ -88,7 +88,7 @@ class GlobalMapController extends Controller
                 'type' => 'Feature',
                 'properties' => json_decode($feature->attributes, true),
                  "geometry" => [
-                     "type" => "MultiPolygon",
+                     "type" => $type,
                      "coordinates" => json_decode($feature->polygon, true)
                  ]
             ];

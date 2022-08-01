@@ -848,6 +848,7 @@ function addStreetLayers (streetsArray)
     steps.addData({ features: stepsArray, type: "FeatureCollection" });
     tertiary.addData({ features: tertiaryArray, type: "FeatureCollection" });
     unclassified.addData({ features: unclassifiedArray, type: "FeatureCollection" });
+
     // 3.3 Add the streetMaterial column type
     // streetsMaterial = L.geoJSON(null, {
     //     onEachFeature: onEachStreetMaterial

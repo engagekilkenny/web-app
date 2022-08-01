@@ -197,15 +197,6 @@ export const mutations = {
      */
     setStreets (state, payload)
     {
-        // Delete missing data. Should be preprocessed before loading the file but we will just do it here
-        payload.features = payload.features.map(feature => {
-            Object.keys(feature.properties).map(key => {
-               if (!feature.properties[key]) delete feature.properties[key];
-            });
-
-            return feature;
-        });
-
         state.streets = payload;
     },
 
