@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Street;
+use App\Models\Engage\Street;
 use Illuminate\Console\Command;
 
 class MigrateStreetToSql extends Command
