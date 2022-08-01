@@ -27,7 +27,7 @@ export const actions = {
                 if (response.data.success)
                 {
                     context.commit('setBuildings', response.data.buildings);
-                    context.commit('setStreets', JSON.parse(response.data.streets));
+                    context.commit('setStreets', response.data.streets);
                     context.commit('setWalls', JSON.parse(response.data.walls));
                     context.commit('setPoints', JSON.parse(response.data.points));
                     context.commit('setMonuments', JSON.parse(response.data.monuments));

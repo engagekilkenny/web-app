@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GlobalMap;
 
 use App\Models\Engage\Building;
+use App\Models\Engage\Street;
 use App\Traits\FilterPhotosByGeoHashTrait;
 
 use Illuminate\Http\Request;
@@ -20,32 +21,12 @@ class GlobalMapController extends Controller
     public function getAllLayers ()
     {
         $buildings = Building::all();
+        $streets = Street::all();
 
-        $buildingsGeojson = [
-            'type' => 'FeatureCollection',
-            "name" => "kilkenny_roi",
-            "crs" => [
-                "type" => "name",
-                "properties" => [
-                    "name" => "urn:ogc:def:crs:OGC:1.3:CRS84"
-                ]
-            ],
-            'features'  => []
-        ];
+        $buildingsGeojson = $this->createGeoJsonArray($buildings);
+        $streetsGeoJson = $this->createGeoJsonArray($streets);
 
-        foreach ($buildings as $building)
-        {
-            $buildingsGeojson['features'][] = [
-                'type' => 'Feature',
-                'properties' => json_decode($building->attributes, true),
-                 "geometry" => [
-                     "type" => "MultiPolygon",
-                     "coordinates" => json_decode($building->polygon, true)
-                 ]
-            ];
-        }
-
-        $streets = file_get_contents(public_path('/js/geojson/streets.geojson'));
+        // $streets = file_get_contents(public_path('/js/geojson/streets.geojson'));
         $walls = file_get_contents(public_path('/js/geojson/newWalls2.geojson'));
         $points = file_get_contents(public_path('/js/geojson/points.geojson'));
         $monuments = file_get_contents(public_path('/js/geojson/monuments.geojson'));
@@ -64,7 +45,7 @@ class GlobalMapController extends Controller
         return [
             'success' => true,
             'buildings' => $buildingsGeojson,
-            'streets' => $streets,
+            'streets' => $streetsGeoJson,
             'walls' => $walls,
             'points' => $points,
             'monuments' => $monuments,
@@ -80,6 +61,38 @@ class GlobalMapController extends Controller
             'leisure' => $leisure,
             'amenities' => $amenities,
         ];
+    }
+
+    /**
+     * Helper function to create GeoJson from an array of features.
+     */
+    private function createGeoJsonArray ($features)
+    {
+        $geojson = [
+            'type' => 'FeatureCollection',
+            "name" => "kilkenny_roi",
+            "crs" => [
+                "type" => "name",
+                "properties" => [
+                    "name" => "urn:ogc:def:crs:OGC:1.3:CRS84"
+                ]
+            ],
+            'features'  => []
+        ];
+
+        foreach ($features as $feature)
+        {
+            $geojson['features'][] = [
+                'type' => 'Feature',
+                'properties' => json_decode($feature->attributes, true),
+                 "geometry" => [
+                     "type" => "MultiPolygon",
+                     "coordinates" => json_decode($feature->polygon, true)
+                 ]
+            ];
+        }
+
+        return $geojson;
     }
 
 //    /**
